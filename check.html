@@ -1,41 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Check-In</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Check-In System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .export-btn {
+      margin-top: 20px;
+      display: block;
+      background-color: #007bff;
+    }
+    .export-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Student Hostel Check-In</h1>
+    <form id="checkinForm">
+      <div class="form-group">
+        <label for="studentName">Name</label>
+        <input type="text" id="studentName" required>
+      </div>
+      <div class="form-group">
+        <label for="rollNumber">Roll Number</label>
+        <input type="text" id="rollNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" required>
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="roomNumber">Room Number</label>
+        <input type="text" id="roomNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="checkinDate">Check-In Date</label>
+        <input type="date" id="checkinDate" required>
+      </div>
+      <button type="submit">Check In</button>
+    </form>
 
-  <h2>🙋 Student Check-In</h2>
-  <p>Please fill out the following form to complete your check-in process.</p>
-   <!-- Optional: Check-In Instructional Video -->
-  <video width="500" controls>
-    <source src="https://www.youtube.com/shorts/TbLoizDfMmI" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+    <div class="student-list">
+      <h2>Checked-In Students</h2>
+      <input type="text" id="searchInput" placeholder="Search by name or roll number...">
+      <button class="export-btn" onclick="exportToCSV()">Export to CSV</button>
+      <table id="studentTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Roll Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Gender</th>
+            <th>Room</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 
-  <!-- Student Check-In Form -->
-  <form>
-    <label for="name">Student Name:</label><br>
-    <input type="text" id="name" name="name"><br><br>
+  <script>
+    const form = document.getElementById('checkinForm');
+    const tableBody = document.querySelector('#studentTable tbody');
+    const searchInput = document.getElementById('searchInput');
 
-    <label for="id">Student ID:</label><br>
-    <input type="text" id="id" name="id"><br><br>
+    let students = JSON.parse(localStorage.getItem('students')) || [];
 
-    <label for="id">Student ID:</label><br>
-    <input type="text" id="id" name="id"><br><br>
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+      data.forEach((student, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.name}</td>
+          <td>${student.roll}</td>
+          <td>${student.email}</td>
+          <td>${student.phone}</td>
+          <td>${student.department}</td>
+          <td>${student.gender}</td>
+          <td>${student.room}</td>
+          <td>${student.date}</td>
+          <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
 
-    <label for="room">Preferred Room Type:</label><br>
-    <select id="room" name="room">
-      <option value="single">Single</option>
-      <option value="double">Double Sharing</option>
-      <option value="triple">Triple Sharing</option>
-    </select><br><br>
+    renderTable(students);
 
-    <label for="checkin-date">Check-In Date:</label><br>
-    <input type="date" id="checkin-date" name="checkin-date"><br><br>
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    <input type="submit" value="Check In">
-  </form>
+      const student = {
+        name: document.getElementById('studentName').value.trim(),
+        roll: document.getElementById('rollNumber').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        department: document.getElementById('department').value.trim(),
+        gender: document.getElementById('gender').value,
+        room: document.getElementById('roomNumber').value.trim(),
+        date: document.getElementById('checkinDate').value
+      };
 
+      students.push(student);
+      localStorage.setItem('students', JSON.stringify(students));
+      renderTable(students);
+      form.reset();
+    });
+
+    tableBody.addEventListener('click', function(event) {
+      if (event.target.classList.contains('delete-btn')) {
+        const index = event.target.getAttribute('data-index');
+        students.splice(index, 1);
+        localStorage.setItem('students', JSON.stringify(students));
+        renderTable(students);
+      }
+    });
+
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const filtered = students.filter(student =>
+        student.name.toLowerCase().includes(query) ||
+        student.roll.toLowerCase().includes(query)
+      );
+      renderTable(filtered);
+    });
+
+    function exportToCSV() {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Name,Roll Number,Email,Phone,Department,Gender,Room,Date\n";
+      students.forEach(s => {
+        const row = `${s.name},${s.roll},${s.email},${s.phone},${s.department},${s.gender},${s.room},${s.date}`;
+        csvContent += row + "\n";
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "students.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
 </body>
 </html>
+
