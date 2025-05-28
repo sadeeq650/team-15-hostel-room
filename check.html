@@ -40,7 +40,11 @@
     }
     button {
       padding: 10px 15px;
+
       background-color: #28a746;
+
+      background-color: #28a745;
+
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -60,10 +64,21 @@
       text-align: center;
     }
     .delete-btn {
+
       background-color: #dc3546;
       color: white;
       border: none;
       padding: 10px 20px;
+
+      background-color: #dc3545;
+
+      color: white;
+
+      color: red;
+
+      border: none;
+      padding: 5px 10px;
+
       border-radius: 3px;
       cursor: pointer;
     }
@@ -73,7 +88,11 @@
       background-color: #007bff;
     }
     .export-btn:hover {
+
       background-color: #0056b4;
+
+      background-color: #0056b3;
+
     }
   </style>
 </head>
@@ -98,6 +117,7 @@
         <input type="text" id="phone" required>
       </div>
       <div class="form-group">
+
         <label for="department">Department</label>
         <input type="text" id="department" required>
       </div>
@@ -121,6 +141,36 @@
       <button type="submit">Check In</button>
     </form>
 
+
+
+        <label for="department">which Department</label>
+        <label for="department">Department</label>
+
+        <input type="text" id="department" required>
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" required>
+          <option value="">Gender</option>
+          <option value="">Select Gender</option>
+
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="roomNumber">Room Number</label>
+        <input type="text" id="roomNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="checkinDate">Check-In Date</label>
+        <input type="date" id="checkinDate" required>
+      </div>
+      <button type="submit">Check In</button>
+    </form>
+
+
     <div class="student-list">
       <h2>Checked-In Students</h2>
       <input type="text" id="searchInput" placeholder="Search by name or roll number...">
@@ -128,6 +178,7 @@
       <table id="studentTable">
         <thead>
           <tr>
+
             <th>student Name</th>
             <th>student Roll Number</th>
             <th>student Email</th>
@@ -136,6 +187,28 @@
             <th>Gender</th>
             <th>Room</th>
             <th>Date</th>
+
+
+            <th>student full Name</th>
+            <th>student Roll Number</th>
+            <th>student Email</th>
+	    <th>parent Email</th>
+            <th>student Phone</th>
+            <th>Department</th>
+            <th>Gender</th>
+            <th>Room</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Roll Number</th>
+            <th>Email</th>
+            <th>student Phone</th>
+	    <th>parent Phone</th>
+	    <th>Department</th>
+            <th>Gender</th>
+            <th>Room</th>
+            <th>Birth Date</th>
+
+
             <th>Actions</th>
           </tr>
         </thead>
