@@ -40,7 +40,7 @@
     }
     button {
       padding: 10px 15px;
-      background-color: #28a746;
+      background-color: #28a745;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -60,12 +60,21 @@
       text-align: center;
     }
     .delete-btn {
-      background-color: #dc3546;
+      background-color: #dc3545;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 5px 10px;
       border-radius: 3px;
       cursor: pointer;
+    }
+    .edit-btn {
+      background-color: #ffc107;
+      color: black;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-left: 5px;
     }
     .export-btn {
       margin-top: 20px;
@@ -73,7 +82,7 @@
       background-color: #007bff;
     }
     .export-btn:hover {
-      background-color: #0056b4;
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -128,11 +137,11 @@
       <table id="studentTable">
         <thead>
           <tr>
-            <th>student Name</th>
-            <th>student Roll Number</th>
-            <th>student Email</th>
-            <th>student Phone</th>
-            <th>student Department</th>
+            <th>Name</th>
+            <th>Roll Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
             <th>Gender</th>
             <th>Room</th>
             <th>Date</th>
@@ -150,6 +159,7 @@
     const searchInput = document.getElementById('searchInput');
 
     let students = JSON.parse(localStorage.getItem('students')) || [];
+    let editIndex = -1;
 
     function renderTable(data) {
       tableBody.innerHTML = '';
@@ -164,7 +174,10 @@
           <td>${student.gender}</td>
           <td>${student.room}</td>
           <td>${student.date}</td>
-          <td><button class="delete-btn" data-index="${index}">Delete</button></td>
+          <td>
+            <button class="delete-btn" data-index="${index}">Delete</button>
+            <button class="edit-btn" data-index="${index}">Edit</button>
+          </td>
         `;
         tableBody.appendChild(row);
       });
@@ -186,18 +199,36 @@
         date: document.getElementById('checkinDate').value
       };
 
-      students.push(student);
+      if (editIndex > -1) {
+        students[editIndex] = student;
+        editIndex = -1;
+      } else {
+        students.push(student);
+      }
+
       localStorage.setItem('students', JSON.stringify(students));
       renderTable(students);
       form.reset();
     });
 
     tableBody.addEventListener('click', function(event) {
+      const index = event.target.getAttribute('data-index');
+
       if (event.target.classList.contains('delete-btn')) {
-        const index = event.target.getAttribute('data-index');
         students.splice(index, 1);
         localStorage.setItem('students', JSON.stringify(students));
         renderTable(students);
+      } else if (event.target.classList.contains('edit-btn')) {
+        const student = students[index];
+        document.getElementById('studentName').value = student.name;
+        document.getElementById('rollNumber').value = student.roll;
+        document.getElementById('email').value = student.email;
+        document.getElementById('phone').value = student.phone;
+        document.getElementById('department').value = student.department;
+        document.getElementById('gender').value = student.gender;
+        document.getElementById('roomNumber').value = student.room;
+        document.getElementById('checkinDate').value = student.date;
+        editIndex = index;
       }
     });
 
